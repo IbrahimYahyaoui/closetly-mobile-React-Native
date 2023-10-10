@@ -5,7 +5,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const index = () => {
   return (
     <SafeAreaView>
-      <Text>New</Text>
+      <Text>Nesw</Text>
+      {/* there is event called onLongPress  */}
     </SafeAreaView>
   );
 };

@@ -14,9 +14,9 @@ const _layout = () => {
           if (focused) {
             // Display the label for the active tab
             switch (route.name) {
-              case "index":
+              case "Home":
                 return <Text className=" text-xs">Home</Text>;
-              case "closet":
+              case "Closet":
                 return <Text className=" text-xs">Closet</Text>;
               case "new":
                 return <Text className=" text-xs">New</Text>;
@@ -34,7 +34,7 @@ const _layout = () => {
       })}
     >
       <Tabs.Screen
-        name="index"
+        name="Home"
         options={{
           tabBarIcon: () => {
             return <AntDesign name="home" size={24} color="black" />;
@@ -42,7 +42,7 @@ const _layout = () => {
         }}
       />
       <Tabs.Screen
-        name="closet"
+        name="ClosetNav"
         options={{
           tabBarIcon: () => {
             return <Ionicons name="shirt-outline" size={24} color="black" />;

@@ -5,6 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { TabView } from "@rneui/base";
 import { FontAwesome } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import ClosetComp from "../../screens/ClosetComp";
 const index = () => {
   const [index, setIndex] = React.useState(0);
 
@@ -38,7 +39,7 @@ const index = () => {
 
       <TabView value={index} onChange={setIndex} animationType="spring">
         <TabView.Item style={{ width: "100%" }}>
-          <Text>Closet item</Text>
+          <ClosetComp />
         </TabView.Item>
         <TabView.Item style={{ width: "100%" }}>
           <Text>Outfit Item</Text>

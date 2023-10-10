@@ -1,9 +1,13 @@
 import axios from "axios";
 import { Redirect, router } from "expo-router";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useToast } from "react-native-toast-notifications";
+import { useAuthContext } from "../context/AuthContext";
 
 export const useAuth = () => {
+  //
+  const { dispatch } = useAuthContext();
+  //
   const toast = useToast();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -19,10 +23,12 @@ export const useAuth = () => {
       });
 
       setIsLoading(false);
+
+      dispatch({ type: "SIGN_UP", payload: response.data });
       toast.show(`welcome to closetly ${username}`, {
         type: "success",
       });
-      router.replace("/(tabs)");
+      router.replace("/(tabs)/Home");
     } catch (error: any) {
       if (error.response) {
         const errorMessage = error.response.data.error;
@@ -50,10 +56,12 @@ export const useAuth = () => {
       });
 
       setIsLoading(false);
+
+      dispatch({ type: "SIGN_IN", payload: response.data });
       toast.show(`welcome to closetly ${username}`, {
         type: "success",
       });
-      router.replace("/(tabs)");
+      router.replace("/(tabs)/Home");
     } catch (error: any) {
       if (error.response) {
         const errorMessage = error.response.data.error;
