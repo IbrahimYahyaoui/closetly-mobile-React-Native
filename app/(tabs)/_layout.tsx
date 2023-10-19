@@ -1,72 +1,84 @@
 import React from "react";
 import { Text } from "react-native";
 import { Tabs } from "expo-router";
-import { AntDesign } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
-import { EvilIcons } from "@expo/vector-icons";
+import ClosetIconFocus from "../../assets/icon/ClosetFill.svg";
+import ClosetIconNotFocus from "../../assets/icon/ClosetStroke.svg";
+import HomeIconFocus from "../../assets/icon/homeFill.svg";
+import HomeIconNotFocus from "../../assets/icon/homeOutline.svg";
+import ProfileIconFocus from "../../assets/icon/profileFill.svg";
+import ProfileIconNotFocus from "../../assets/icon/profileOutline.svg";
+import ShirtIconFocus from "../../assets/icon/shirtFill.svg";
+import ShirtIconNotFocus from "../../assets/icon/shirtOutline.svg";
 
 const _layout = () => {
   return (
     <Tabs
       screenOptions={({ route }) => ({
-        headerShown: false,
-        tabBarLabel: ({ focused }) => {
-          if (focused) {
-            // Display the label for the active tab
-            switch (route.name) {
-              case "Home":
-                return <Text className=" text-xs">Home</Text>;
-              case "Closet":
-                return <Text className=" text-xs">Closet</Text>;
-              case "new":
-                return <Text className=" text-xs">New</Text>;
-              case "profile":
-                return <Text className=" text-xs">Profile</Text>;
-              default:
-                return null;
-            }
-          } else {
-            // Hide labels for inactive tabs
-            return null;
-          }
+        tabBarStyle: {
+          height: 65,
         },
-        tabBarActiveBackgroundColor: "#F0F0F0",
+        headerShown: false,
+        tabBarShowLabel: false,
+        tabBarIcon: ({ focused }) => {
+          if (route.name === "Home") {
+            return focused ? (
+              <>
+                <HomeIconFocus width={25} height={25} />
+                <Text className=" text-sm font-semibold ">{route.name}</Text>
+              </>
+            ) : (
+              <>
+                <HomeIconNotFocus width={25} height={25} />
+                <Text className=" text-sm ">{route.name}</Text>
+              </>
+            );
+          } else if (route.name === "Closet") {
+            return focused ? (
+              <>
+                <ClosetIconFocus width={25} height={25} />
+                <Text className=" text-sm font-semibold ">{route.name}</Text>
+              </>
+            ) : (
+              <>
+                <ClosetIconNotFocus width={25} height={25} />
+                <Text className=" text-sm  ">{route.name}</Text>
+              </>
+            );
+          } else if (route.name === "Profile") {
+            return focused ? (
+              <>
+                <ProfileIconFocus width={25} height={25} />
+                <Text className=" text-sm font-semibold ">{route.name}</Text>
+              </>
+            ) : (
+              <>
+                <ProfileIconNotFocus width={25} height={25} />
+                <Text className=" text-sm  ">{route.name}</Text>
+              </>
+            );
+          } else if (route.name === "Outfit") {
+            return focused ? (
+              <>
+                <ShirtIconFocus width={25} height={25} />
+                <Text className=" text-sm font-semibold ">{route.name}</Text>
+              </>
+            ) : (
+              <>
+                <ShirtIconNotFocus width={25} height={25} />
+                <Text className=" text-sm  ">{route.name}</Text>
+              </>
+            );
+          }
+          return null;
+        },
+        // tabBarShowLabel: false,
+        // headerPressOpacity: 50,
       })}
     >
-      <Tabs.Screen
-        name="Home"
-        options={{
-          tabBarIcon: () => {
-            return <AntDesign name="home" size={24} color="black" />;
-          },
-        }}
-      />
-      <Tabs.Screen
-        name="ClosetNav"
-        options={{
-          tabBarIcon: () => {
-            return <Ionicons name="shirt-outline" size={24} color="black" />;
-          },
-        }}
-      />
-      <Tabs.Screen
-        name="new"
-        options={{
-          tabBarIcon: () => {
-            return (
-              <Ionicons name="add-circle-outline" size={28} color="black" />
-            );
-          },
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          tabBarIcon: () => {
-            return <EvilIcons name="user" size={32} color="black" />;
-          },
-        }}
-      />
+      <Tabs.Screen name="Home" />
+      <Tabs.Screen name="Closet" />
+      <Tabs.Screen name="Outfit" />
+      <Tabs.Screen name="Profile" />
     </Tabs>
   );
 };

@@ -6,18 +6,23 @@ import React, {
   Dispatch,
   useEffect,
 } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Redirect, router } from "expo-router";
 
+import { UserAuth } from "../types/types";
+import { useNavigation } from "expo-router";
+
+//
+
+//
 // Define the initial state and action types
-
-import { UserData } from "../types/types";
-
 type State = {
-  user: UserData | null; // Change the user field to be of type UserData or null
+  user: UserAuth | null; // Change the user field to be of type UserAuth or null
 };
 
 type Action =
-  | { type: "SIGN_IN"; payload: UserData }
-  | { type: "SIGN_UP"; payload: UserData }
+  | { type: "SIGN_IN"; payload: UserAuth }
+  | { type: "SIGN_UP"; payload: UserAuth }
   | { type: "LOG_OUT" };
 
 // Create the context
@@ -40,12 +45,25 @@ function authReducer(state: State, action: Action): State {
 
 // Create the context provider
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const navigation = useNavigation();
   const [state, dispatch] = useReducer(authReducer, {
     user: null, // Initialize user as null
   });
 
   useEffect(() => {
-    console.log("this is the state", state);
+    getData().then((res) => {
+      if (res) {
+        console.log("user already here");
+        router.replace("/(tabs)/Home");
+        dispatch({ type: "SIGN_IN", payload: res });
+      } else {
+        console.log("no user found");
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log("st", state);
   }, [state]);
 
   return (
@@ -62,3 +80,12 @@ export function useAuthContext() {
   }
   return context;
 }
+
+const getData = async () => {
+  try {
+    const rawData = await AsyncStorage.getItem("user");
+    return rawData ? JSON.parse(rawData) : null;
+  } catch (e) {
+    console.log("error while getting the user from local ");
+  }
+};

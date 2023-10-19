@@ -2,13 +2,12 @@ import { View, Text } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const index = () => {
+const Outfit = () => {
   return (
     <SafeAreaView>
-      <Text>Nesw</Text>
-      {/* there is event called onLongPress  */}
+      <Text>Outfit</Text>
     </SafeAreaView>
   );
 };
 
-export default index;
+export default Outfit;

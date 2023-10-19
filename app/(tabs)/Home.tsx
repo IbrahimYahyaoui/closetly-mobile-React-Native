@@ -5,6 +5,7 @@ import { Avatar, Badge } from "@rneui/themed";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useFonts, Outfit_400Regular } from "@expo-google-fonts/dev";
 import { useAuthContext } from "../../context/AuthContext";
+import { getGreeting } from "../../utils/Gretting";
 const Home = () => {
   //
   const { state } = useAuthContext();
@@ -17,7 +18,7 @@ const Home = () => {
     return null;
   }
   return (
-    <SafeAreaView>
+    <SafeAreaView className="bg-white flex-1">
       <View className="h-32  p-2 pt-6">
         <View className=" flex-row   justify-between ">
           <View className="flex-row">
@@ -34,7 +35,7 @@ const Home = () => {
                   size={52}
                   rounded
                   source={{
-                    uri: "https://randomuser.me/api/portraits/men/36.jpg",
+                    uri: state.user.Avatar,
                   }}
                 />
               )}
@@ -54,12 +55,7 @@ const Home = () => {
               >
                 {state.user?.username ? state.user?.username : "Hi!"}
               </Text>
-              <Text
-                style={{ fontFamily: "Outfit_400Regular" }}
-                className="capitalize opacity-50"
-              >
-                good morning
-              </Text>
+              {getGreeting()}
             </View>
           </View>
           <View className="self-center border  p-2 rounded-full mr-2 bg-black">
@@ -71,12 +67,14 @@ const Home = () => {
 
             <Badge
               status="error"
-              value={state.user?.Notification.length}
+              value={0}
               containerStyle={{ position: "absolute", top: -6, right: -5 }}
             />
           </View>
         </View>
-        <View></View>
+        <View className="">
+          <Text>aa</Text>
+        </View>
       </View>
     </SafeAreaView>
   );

@@ -1,6 +1,7 @@
 const { getDefaultConfig } = require("expo/metro-config");
 
 module.exports = (() => {
+  // fix svg
   const config = getDefaultConfig(__dirname);
 
   const { transformer, resolver } = config;

@@ -3,7 +3,7 @@ import { Redirect, router } from "expo-router";
 import { useContext, useState } from "react";
 import { useToast } from "react-native-toast-notifications";
 import { useAuthContext } from "../context/AuthContext";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 export const useAuth = () => {
   //
   const { dispatch } = useAuthContext();
@@ -23,8 +23,9 @@ export const useAuth = () => {
       });
 
       setIsLoading(false);
-
+      setDataInLocalStorage(response.data);
       dispatch({ type: "SIGN_UP", payload: response.data });
+
       toast.show(`welcome to closetly ${username}`, {
         type: "success",
       });
@@ -58,6 +59,8 @@ export const useAuth = () => {
       setIsLoading(false);
 
       dispatch({ type: "SIGN_IN", payload: response.data });
+
+      setDataInLocalStorage(response.data);
       toast.show(`welcome to closetly ${username}`, {
         type: "success",
       });
@@ -79,4 +82,12 @@ export const useAuth = () => {
   };
 
   return { signup, isLoading, signin };
+};
+
+const setDataInLocalStorage = async (value: object) => {
+  try {
+    await AsyncStorage.setItem("user", JSON.stringify(value));
+  } catch (error) {
+    console.error("Error while storing data in AsyncStorage:", error);
+  }
 };
