@@ -4,3 +4,9 @@ export interface UserAuth {
   Avatar: string;
   username: string;
 }
+
+export type FileType = {
+  uri?: string;
+  type?: string;
+  fileName: string;
+};
