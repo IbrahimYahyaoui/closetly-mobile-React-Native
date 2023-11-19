@@ -1,4 +1,4 @@
-import { View, Text, FlatList } from "react-native";
+import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Avatar, Badge } from "@rneui/themed";
@@ -6,6 +6,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useFonts, Outfit_400Regular } from "@expo-google-fonts/dev";
 import { useAuthContext } from "../../context/AuthContext";
 import { getGreeting } from "../../utils/Gretting";
+import Toast from "react-native-toast-message";
 const Home = () => {
   //
   const { state } = useAuthContext();
@@ -58,7 +59,16 @@ const Home = () => {
               {getGreeting()}
             </View>
           </View>
-          <View className="self-center border  p-2 rounded-full mr-2 bg-black">
+          <TouchableOpacity
+            className="self-center border  p-2 rounded-full mr-2 bg-black"
+            onPress={() => {
+              Toast.show({
+                type: "success",
+                text1: "🚧🚧🚧🚧",
+                text2: "under development",
+              });
+            }}
+          >
             <MaterialCommunityIcons
               name="bell-outline"
               size={24}
@@ -70,7 +80,7 @@ const Home = () => {
               value={0}
               containerStyle={{ position: "absolute", top: -6, right: -5 }}
             />
-          </View>
+          </TouchableOpacity>
         </View>
         <View className="">
           <Text>aa</Text>

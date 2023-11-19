@@ -6,8 +6,9 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Keyboard,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { Image } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -15,12 +16,15 @@ import { useFonts, Poppins_400Regular } from "@expo-google-fonts/poppins";
 import { Pacifico_400Regular } from "@expo-google-fonts/pacifico";
 import { Salsa_400Regular } from "@expo-google-fonts/salsa";
 import { Dropdown } from "react-native-element-dropdown";
-import { UseCloth } from "../hooks/useCloth";
+import { UseCloset } from "../hooks/useCloset";
 //
 import { FileType } from "../types/types";
-const AddCloth = () => {
+import { useToast } from "react-native-toast-notifications";
+
+import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
+const AddCloth = ({ closeModalHandler }: { closeModalHandler: () => void }) => {
   //
-  const { AddCloth } = UseCloth();
+  const { AddCloth, isLoading, getAllCloth } = UseCloset();
   //
   const [clothName, setClothName] = useState("");
   const [IsNewCategory, setIsNewCategory] = useState(true);
@@ -29,6 +33,8 @@ const AddCloth = () => {
 
   const [image, setImage] = useState("");
   const [File, setFile] = useState<FileType>();
+
+  const toast = useToast();
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -65,6 +71,7 @@ const AddCloth = () => {
   if (!fontsLoaded) {
     return null;
   }
+
   // tmp data for test
   const data = [
     { label: "Item 1", value: "1" },
@@ -79,12 +86,40 @@ const AddCloth = () => {
 
   // handel sent data
   const handelDataSend = () => {
+    // toast.hideAll();
+    if (!File) {
+      Toast.show({
+        type: "error",
+        text1: "Error: No picture selected",
+        text2: " You missed adding  your cloth picture",
+      });
+      return;
+    }
+
+    if (clothName.length < 3 || clothName.length > 10) {
+      Toast.show({
+        type: "error",
+        text1: "Error: cloth Name",
+        text2: "Cloth name must be between 3 and 8 characters in length.",
+      });
+      return;
+    }
+    if (catvalue.length < 3) {
+      Toast.show({
+        type: "error",
+        text1: "Error: Category selection",
+        text2:
+          "You forgot to add a category, or the entered category is shorter than 3 characters.",
+      });
+      return;
+    }
+
     if (File) {
-      AddCloth(clothName, File, catvalue);
+      AddCloth(clothName, File, catvalue, closeModalHandler);
     }
   };
   return (
-    <View className="items-center">
+    <View className="items-center z-10">
       <Text
         className="uppercase font-bold text-xl "
         style={{ fontFamily: "Poppins_400Regular" }}
@@ -199,20 +234,41 @@ const AddCloth = () => {
             </Text>
           </>
         )}
-        <TouchableOpacity
-          className="w-full items-center h-12 border justify-center mt-4 bg-black rounded"
-          onPress={() => {
-            handelDataSend();
-          }}
-        >
-          <Text
-            className="text-white capitalize"
-            style={{ fontFamily: "Poppins_400Regular" }}
+
+        {!isLoading ? (
+          <TouchableOpacity
+            className="w-full items-center h-12 border justify-center mt-4 bg-black rounded"
+            onPress={() => {
+              Keyboard.dismiss();
+              handelDataSend();
+            }}
           >
-            add to you Closet
-          </Text>
-        </TouchableOpacity>
+            <Text
+              className="text-white capitalize"
+              style={{ fontFamily: "Poppins_400Regular" }}
+            >
+              add to you Closet
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            className="w-full items-center h-12 border justify-center mt-4 bg-black rounded"
+            onPress={() => {
+              handelDataSend();
+              console.log("ssssss");
+            }}
+          >
+            <Text
+              className="text-white capitalize"
+              style={{ fontFamily: "Poppins_400Regular" }}
+            >
+              loading...
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
+      {/* toast must be here in the end of the tree */}
+      <Toast />
     </View>
   );
 };
